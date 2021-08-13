@@ -1,57 +1,57 @@
 import React from 'react';
-import IssueService from "./IssueService";
+import {
+    Link
+} from "react-router-dom";
+import BugDetails from "./BugDetails";
 
 class Buglist extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loading: true,
-            issues: [],
-        };
-    }
-    componentDidMount() {
-        IssueService.getTickets()
-            .then((issues) => {
-                this.setState({
-                    issues,
-                    loading: false
-                });
-            });
     }
 
     renderTableData() {
-        return this.state.issues.map((issue, index) => {
+        return this.props.issues.map((issue, index) => {
             const { _id, name, createdTimestamp, editedTimestamp, description, owner, status } = issue //destructuring
+            const issueUrl = `/issue/${_id}`;
             return (
-                <tr className="table-primary" key={_id} >
-                    {/*<td>{_id}</td>*/}
-                    <td>{name}</td>
-                    <td>{createdTimestamp}</td>
-                    {/*<td>{editedTimestamp}</td>*/}
-                    <td>{description}</td>
-                    <td>{owner}</td>
-                    <td>{status}</td>
+                <tr
+                    className="table-primary"
+                    key={_id}
+                    style={{"borderWidth":"1px", 'borderColor':"#aaa", 'borderStyle':'solid'}}
+                >
+                    <td><Link component={BugDetails} to={issueUrl}>{name}</Link></td>
+                    <td><Link to={issueUrl}>{createdTimestamp}</Link></td>
+                    <td><Link to={issueUrl}>{description}</Link></td>
+                    <td><Link to={issueUrl}>{owner}</Link></td>
+                    <td><Link to={issueUrl}>{status}</Link></td>
                 </tr>
             )
         })
     }
 
     render() {
-        let content = (<h2>Loading</h2>);
-        if(!this.state.loading) {
-            content = (
+        return (
+            <div className="buglist">
                 <div id="bug-table">
-                    <h2>some words</h2>
-                    <table className="table table-hover" id="issues">
+                    <h2>Current Issues</h2>
+                    <table
+                        className="table table-hover"
+                        id="issues"
+                    >
+                        <thead>
+                        <tr>
+                            <th>name</th>
+                            <th>created</th>
+                            <th>description</th>
+                            <th>owner</th>
+                            <th>status</th>
+                        </tr>
+                        </thead>
                         <tbody>
                         { this.renderTableData() }
                         </tbody>
                     </table>
-                </div>)
-        }
-        return (
-            <div className="buglist">
-                { content }
+                </div>
             </div>
         );
     }

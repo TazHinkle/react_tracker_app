@@ -9,14 +9,14 @@ const clientPromise = MongoClient.connect(
 
 //Get Posts
 router.get('/', async (request, response) => {
-    const posts = await loadPostsCollection();
-    response.send(await posts.find({}).toArray());
+    const issues = await loadIssuesCollection();
+    response.send(await issues.find({}).toArray());
 });
 
 
 // Add Post
 router.post('/', async (request, response) => {
-    const posts = await loadPostsCollection();
+    const posts = await loadIssuesCollection();
     const insertResult = await posts.insertOne({
         text: request.body.text,
         owner: request.body.user,
@@ -31,12 +31,23 @@ router.post('/', async (request, response) => {
 
 //Delete Post
 router.delete('/:id', async (request, response) => {
-    const posts = await loadPostsCollection();
+    const posts = await loadIssuesCollection();
     await posts.deleteOne({_id: new mongodb.ObjectID(request.params.id)});
     response.status(200).send();
 });
 
-async function loadPostsCollection() {
+//Get One Issue
+router.get('/:id', async (request, response) => {
+    const issues = await loadIssuesCollection();
+    var issueId = new mongodb.ObjectId(request.params.id);
+    response.send(
+        await issues.findOne({
+            '_id': issueId
+        })
+    );
+});
+
+async function loadIssuesCollection() {
     const client = await clientPromise;
     return client.db('tracker')
         .collection('tickets');
