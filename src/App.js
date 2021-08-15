@@ -49,16 +49,16 @@ class App extends React.Component {
         IssueService.getTickets()
             .then((issues) => {
                 this.setState({
-                    issues,
                     loading: false,
+                    issues,
                 });
             });
     }
 
     resetOnLogout() {
         this.setState({
-            issues: [],
             loading: true,
+            issues: [],
         });
     }
 
@@ -76,11 +76,11 @@ class App extends React.Component {
         if(isAuth0AndContentDoneLoading) {
             content = (
             <Switch>
+                <Route path="/issue/:issueId">
+                    <BugDetails issues={this.state.issues} />
+                </Route>
                 <Route path="/">
                     <Buglist issues={this.state.issues} />
-                </Route>
-                <Route path="/issue/:id">
-                    <BugDetails issues={this.state.issues} />
                 </Route>
             </Switch>);
         }

@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Link
 } from "react-router-dom";
-import BugDetails from "./BugDetails";
 
 class Buglist extends React.Component {
     constructor(props) {
@@ -19,7 +18,7 @@ class Buglist extends React.Component {
                     key={_id}
                     style={{"borderWidth":"1px", 'borderColor':"#aaa", 'borderStyle':'solid'}}
                 >
-                    <td><Link component={BugDetails} to={issueUrl}>{name}</Link></td>
+                    <td><Link to={issueUrl}>{name}</Link></td>
                     <td><Link to={issueUrl}>{createdTimestamp}</Link></td>
                     <td><Link to={issueUrl}>{description}</Link></td>
                     <td><Link to={issueUrl}>{owner}</Link></td>

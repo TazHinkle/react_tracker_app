@@ -1,10 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-function BugDetails(props) {
 
+function BugDetails(props) {
     const {issueId} = useParams();
     const issue = props.issues.find((item) => item._id === issueId);
+    console.log({
+        props,
+        issue,
+        issueId
+    });
     return (
         <div className="bugDetails">
             <div id="bug-detail-table">
